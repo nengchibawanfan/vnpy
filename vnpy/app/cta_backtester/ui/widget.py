@@ -150,7 +150,7 @@ class BacktesterManager(QtWidgets.QWidget):
         self.log_monitor.setMaximumHeight(400)
 
         self.chart = BacktesterChart()
-        self.chart.setMinimumWidth(1000)
+        self.chart.setMinimumWidth(900)
 
         self.trade_dialog = BacktestingResultDialog(
             self.main_engine,
