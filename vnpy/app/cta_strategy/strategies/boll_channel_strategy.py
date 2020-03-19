@@ -86,7 +86,7 @@ class BollChannelStrategy(CtaTemplate):
         if not am.inited:
             return
 
-        self.boll_up, self.boll_down = am.boll(self.boll_window, self.boll_dev)
+        self.boll_up, boll_mid, self.boll_down = am.boll(self.boll_window, self.boll_dev)
         self.cci_value = am.cci(self.cci_window)
         self.atr_value = am.atr(self.atr_window)
 
