@@ -1,5 +1,6 @@
 import sys
 import traceback
+from retrying import retry
 from datetime import datetime
 from enum import Enum
 from multiprocessing.dummy import Pool
@@ -286,6 +287,7 @@ class RestClient(object):
         url = self.url_base + path
         return url
 
+    @retry(stop_max_attempt_number=10, wait_fixed=10)
     def request(
         self,
         method: str,
