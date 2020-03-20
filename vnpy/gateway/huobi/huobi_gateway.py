@@ -137,7 +137,7 @@ class HuobiGateway(BaseGateway):
     def process_timer_event(self, event: Event):
         """"""
         self.count += 1
-        if self.count < 3:
+        if self.count < 100:
             return
 
         self.query_account()
@@ -310,6 +310,7 @@ class HuobiRestApi(RestClient):
 
     def on_query_account_balance(self, data, request):
         """"""
+        print(data)
         if self.check_error(data, "查询账户资金"):
             return
 
