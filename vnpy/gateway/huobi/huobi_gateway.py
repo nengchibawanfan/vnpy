@@ -311,7 +311,6 @@ class HuobiRestApi(RestClient):
 
     def on_query_account_balance(self, data, request):
         """"""
-        print(data)
         if self.check_error(data, "查询账户资金"):
             return
 
