@@ -1,0 +1,97 @@
+# -*- coding: utf-8 -*-
+# Author: zhangchao
+# Date: 2020-03-19
+# Desc:
+import multiprocessing
+import sys
+sys.path.append("../..")
+from time import sleep
+from logging import INFO
+
+from vnpy.event import EventEngine
+from vnpy.trader.setting import SETTINGS
+from vnpy.trader.engine import MainEngine
+
+from vnpy.gateway.huobi import HuobiGateway
+from vnpy.app.cta_strategy import CtaStrategyApp
+from vnpy.app.cta_strategy.base import EVENT_CTA_LOG
+
+SETTINGS["log.active"] = True
+SETTINGS["log.level"] = INFO
+SETTINGS["log.console"] = True
+
+huobi_setting = {
+    "API Key": "mn8ikls4qg-32009fdd-d215fba2-b5d21",
+    "Secret Key": "ed25af3e-a3908238-a328d6d0-5ce09",
+    "会话数": 3,
+    "代理地址": "",
+    "代理端口": "",
+}
+
+
+def run_child():
+    """
+    Running in the child process.
+    """
+    SETTINGS["log.file"] = True
+
+    event_engine = EventEngine()
+    main_engine = MainEngine(event_engine)
+    # main_engine.add_gateway(CtpGateway)
+    main_engine.add_gateway(HuobiGateway)
+    cta_engine = main_engine.add_app(CtaStrategyApp)
+    main_engine.write_log("主引擎创建成功")
+
+    log_engine = main_engine.get_engine("log")
+    event_engine.register(EVENT_CTA_LOG, log_engine.process_log_event)
+    main_engine.write_log("注册日志事件监听")
+
+    # main_engine.connect(ctp_setting, "CTP")
+    # main_engine.write_log("连接CTP接口")
+    main_engine.connect(huobi_setting, "HUOBI")
+    main_engine.write_log("连接HUOBI接口")
+
+    sleep(10)
+
+    cta_engine.init_engine()
+    main_engine.write_log("CTA引擎初始化完成")
+
+    cta_engine.init_all_strategies()
+    sleep(10)  # Leave enough time to complete strategy initialization
+    main_engine.write_log("CTA策略全部初始化")
+
+    cta_engine.start_all_strategies()
+    main_engine.write_log("CTA策略全部启动")
+
+    while True:
+        sleep(1)
+
+
+def run_parent():
+    """
+    Running in the parent process.
+    """
+    print("启动CTA策略守护父进程")
+
+    # Chinese futures market trading period (day/night)
+
+
+    child_process = None
+
+    while True:
+
+
+        # Start child process in trading period
+        if child_process is None:
+            print("启动子进程")
+            child_process = multiprocessing.Process(target=run_child)
+            child_process.start()
+            print("子进程启动成功")
+
+
+        sleep(5)
+
+
+if __name__ == "__main__":
+    # run_child()
+    run_parent()
