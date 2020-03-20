@@ -137,7 +137,7 @@ class HuobiGateway(BaseGateway):
     def process_timer_event(self, event: Event):
         """"""
         self.count += 1
-        if self.count < 100:
+        if self.count % 50 != 0:
             return
 
         self.query_account()
