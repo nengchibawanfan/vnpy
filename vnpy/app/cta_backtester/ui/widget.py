@@ -57,7 +57,7 @@ class BacktesterManager(QtWidgets.QWidget):
         self.class_combo = QtWidgets.QComboBox()
         self.class_combo.addItems(self.class_names)
 
-        self.symbol_line = QtWidgets.QLineEdit("BTCUSDT.BINANCE")
+        self.symbol_line = QtWidgets.QLineEdit("BTCDM.HUOBI")
 
         self.interval_combo = QtWidgets.QComboBox()
         for inteval in Interval:
