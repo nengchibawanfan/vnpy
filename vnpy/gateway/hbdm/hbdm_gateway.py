@@ -172,11 +172,12 @@ class HbdmGateway(BaseGateway):
     def process_timer_event(self, event: Event):
         """"""
         self.count += 1
-        if self.count < 3:
+        if self.count % 600 == 0:
+            self.query_account()
+            self.query_position()
+        else:
             return
 
-        self.query_account()
-        self.query_position()
 
     def init_query(self):
         """"""
