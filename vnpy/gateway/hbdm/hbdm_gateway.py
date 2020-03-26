@@ -91,7 +91,7 @@ CONTRACT_TYPE_MAP = {
 
 symbol_type_map = {}
 
-
+lever_rate = 5
 class HbdmGateway(BaseGateway):
     """
     VN Trader Gateway for Hbdm connection.
@@ -413,7 +413,7 @@ class HbdmRestApi(RestClient):
             "direction": DIRECTION_VT2HBDM.get(req.direction, ""),
             "offset": OFFSET_VT2HBDM.get(req.offset, ""),
             "order_price_type": ORDERTYPE_VT2HBDM.get(req.type, ""),
-            "lever_rate": 20
+            "lever_rate": lever_rate
         }
 
         self.add_request(
@@ -453,7 +453,7 @@ class HbdmRestApi(RestClient):
                 "direction": DIRECTION_VT2HBDM.get(req.direction, ""),
                 "offset": OFFSET_VT2HBDM.get(req.offset, ""),
                 "order_price_type": ORDERTYPE_VT2HBDM.get(req.type, ""),
-                "lever_rate": 20
+                "lever_rate": lever_rate
             }
 
             orders_data.append(d)
